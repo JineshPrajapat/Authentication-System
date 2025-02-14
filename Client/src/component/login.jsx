@@ -45,7 +45,7 @@ const Login = ({ toggleForm }) => {
         <form onSubmit={handleSubmit}>
           {/* Email Input */}
           <div className="mb-4">
-            <label htmlFor="email" className="block text-sm font-semibold text-gray-700">Email</label>
+            <label htmlFor="email" className="block text-left text-sm font-semibold text-gray-700">Email</label>
             <input
               type="email"
               name="email"
@@ -58,7 +58,7 @@ const Login = ({ toggleForm }) => {
 
           {/* Password Input */}
           <div className="mb-4">
-            <label htmlFor="password" className="block text-sm font-semibold text-gray-700">Password</label>
+            <label htmlFor="password" className="block text-left text-sm font-semibold text-gray-700">Password</label>
             <input
               type="password"
               name="password"

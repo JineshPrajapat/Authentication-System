@@ -14,36 +14,46 @@ const Dashboard = () => {
         name: '',
         date: '',
     });
-    const [sortBy, setSortBy] = useState('desc');
+    const [sortBy, setSortBy] = useState('');
     const [search, setSearch] = useState('');
 
 
     const dispatch = useDispatch();
 
     const fetchUsers = async () => {
-        setCursor(users[users.length - 1]?._id)
+
+        const params = {
+            name: search ?? "",
+            status: filters.status,
+            date: filters.date,
+            sortBy
+        };
+
+        if (!search && !filters.status && !filters.date && !sortBy) {
+            params.cursor = cursor;
+        }
+
         setLoading(true);
         try {
             const response = await userApi.get('/user/allUsers', {
-                params: {
-                    cursor: cursor,
-                    name: search ?? "",
-                    status: filters.status,
-                    date: filters.date,
-                    sortBy,
-                },
+                params,
             });
             if (response.data.success === true) {
-                setUsers(response.data.users)
-                setUsers((prevUsers) => {
-                    const existingUserIds = new Set(prevUsers.map((user) => user._id));
 
-                    const uniqueUsers = response.data.users.filter(
-                        (newUser) => !existingUserIds.has(newUser._id)
-                    );
+                if (!search && !filters.status && !filters.date && !sortBy) {
+                    setUsers((prevUsers) => {
+                        const existingUserIds = new Set(prevUsers.map((user) => user._id));
 
-                    return [...prevUsers, ...uniqueUsers];
-                });
+                        const uniqueUsers = response.data.users.filter(
+                            (newUser) => !existingUserIds.has(newUser._id)
+                        );
+
+                        return [...prevUsers, ...uniqueUsers];
+                    });
+                }
+                else{
+                    setUsers(response.data.users);
+                }
             }
         } catch (error) {
             if (error.status === 404) {
@@ -195,7 +205,7 @@ const Dashboard = () => {
                         </div>
                     ) : (
                         <button
-                            onClick={fetchUsers}
+                            onClick={() => { setCursor(users[users.length - 1]?._id); fetchUsers }}
                             className="px-6 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-700 transition duration-300"
                         >
                             Load More

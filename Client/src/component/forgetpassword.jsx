@@ -52,7 +52,7 @@ const ForgotPassword = () => {
           <form onSubmit={handleSubmit}>
             {/* Email Input */}
             <div className="mb-4">
-              <label htmlFor="email" className="block text-sm font-semibold text-gray-700">Email</label>
+              <label htmlFor="email" className="block text-left text-sm font-semibold text-gray-700">Email</label>
               <input
                 type="email"
                 id="email"

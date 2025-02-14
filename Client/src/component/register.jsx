@@ -97,7 +97,7 @@ const Register = ({toggleForm}) => {
         <form onSubmit={handleSubmit}>
           {/* Name Input */}
           <div className="mb-4">
-            <label htmlFor="name" className="block text-sm font-semibold text-gray-700">Full Name</label>
+            <label htmlFor="name" className="block text-left text-sm font-semibold text-gray-700">Full Name</label>
             <input
               type="text"
               id="name"
@@ -111,7 +111,7 @@ const Register = ({toggleForm}) => {
 
           {/* Email Input */}
           <div className="mb-4">
-            <label htmlFor="email" className="block text-sm font-semibold text-gray-700">Email</label>
+            <label htmlFor="email" className="block text-left text-sm font-semibold text-gray-700">Email</label>
             <input
               type="email"
               id="email"
@@ -125,7 +125,7 @@ const Register = ({toggleForm}) => {
 
           {/* Password Input */}
           <div className="mb-4">
-            <label htmlFor="password" className="block text-sm font-semibold text-gray-700">Password</label>
+            <label htmlFor="password" className="block text-left text-sm font-semibold text-gray-700">Password</label>
             <input
               type="password"
               id="password"
