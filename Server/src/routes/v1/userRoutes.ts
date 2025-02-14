@@ -7,6 +7,8 @@ const router = express.Router();
 
 router.get("/", authenticate, asyncHandler(userController.userInfo));
 router.get("/allUsers", authenticate, asyncHandler(userController.allUser));
+router.put("/edit", authenticate, asyncHandler(userController.editProfile));
+router.delete("/delete", authenticate, asyncHandler(userController.deleteAccount));
 
 
 export default router;

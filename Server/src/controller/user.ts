@@ -18,7 +18,10 @@ export const userInfo = async (
             $project: {
                 email: 1,
                 createdAt: 1,
-                status: 1
+                status: 1,
+                profession:1,
+                name:1, 
+                address:1,
             }
         }
     ]);

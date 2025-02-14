@@ -1,10 +1,12 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { AuthStates } from "../../utils/enums";
-import { getAllUsers, login, logOut, register, UserInfo } from "../../services/auth";
+import { deleteAccount, getAllUsers, login, logOut, updateProfile, UserInfo } from "../../services/auth";
 
 const initialState = {
     name:"",
     email:"",
+    profession:"",
+    address:"",
     authState : AuthStates.INITIALIZING,
     loading:false,
     error:null,
@@ -54,8 +56,13 @@ const userSlice = createSlice({
                 state.loading= true;
             })
             .addCase(logOut.fulfilled, (state, action)=>{
-                state.loading=false;
                 state.authState = AuthStates.IDLE
+                state.email = "";
+                state.name = "";
+                state.profession = "";
+                state.address = "";
+                users=[];
+                state.loading=false;
             })
 
             .addCase(logOut.rejected, (state, action)=>{
@@ -73,6 +80,8 @@ const userSlice = createSlice({
                 state.authState = AuthStates.AUTHENTICATED
                 state.email = action.payload.user.email;
                 state.name = action.payload.user.name;
+                state.profession = action.payload.user.profession;
+                state.address = action.payload.user.address;
                 state.loading=false;
             })
             .addCase(UserInfo.rejected, (state, action)=>{
@@ -92,6 +101,43 @@ const userSlice = createSlice({
             .addCase(getAllUsers.rejected, (state, action)=>{
                 state.error = action.payload;
                 state.loading= false;
+            })
+
+            // edit profile
+            .addCase(updateProfile.pending, (state)=>{
+                state.error= null;
+                state.loading=true;
+            })
+            .addCase(updateProfile.fulfilled, (state, action)=>{
+                state.email = action.payload.user.email;
+                state.name = action.payload.user.name;
+                state.profession = action.payload.user.profession;
+                state.address = action.payload.user.address;
+                state.loading=false;
+            })
+            .addCase(updateProfile.rejected, (state, action)=>{
+                state.error= action.payload;
+                state.loading=false;
+            })
+
+            // delete account
+            .addCase(deleteAccount.pending, (state)=>{
+                state.error= null;
+                state.loading=true;
+            })
+            .addCase(deleteAccount.fulfilled, (state, action)=>{
+                console.log("login successfully", action)
+                state.authState = AuthStates.IDLE
+                state.email = "";
+                state.name = "";
+                state.profession = "";
+                state.address = "";
+                users=[];
+                state.loading=false;
+            })
+            .addCase(deleteAccount.rejected, (state, action)=>{
+                state.error= action.payload;
+                state.loading=false;
             })
 
     }

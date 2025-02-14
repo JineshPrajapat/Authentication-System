@@ -233,3 +233,50 @@ export const UserInfo = createAsyncThunk(
         }
     }
 )
+
+export const updateProfile = createAsyncThunk(
+    "user/editProfile",
+    async(
+        {formData}, {rejectWithValue}
+    )=>{
+        try {
+            console.log("update profiel formDate", formData)
+            const response = await userApi.put("/user/edit",formData);
+            const {updatedUser} = response.data;
+            console.log("user", response.data)
+            if(response.data.success === true)
+            {
+                return {user: updatedUser}
+            }
+            else{
+                return rejectWithValue("Failed to update profile, try again");
+            }
+        } catch (error) {
+            return rejectWithValue(
+                error.response?.data?.message || "Failed to update profile: Server error."
+            );
+        }
+    }
+);
+
+export const deleteAccount = createAsyncThunk(
+    "user/deleleAccount",
+    async(
+        _, {rejectWithValue}
+    )=>{
+        try {
+            const response = await userApi.delete("/user/delete");
+            if(response.data.success === true)
+            {
+                return {}
+            }
+            else{
+                return rejectWithValue("Failed to delete profile, try again");
+            }
+        } catch (error) {
+            return rejectWithValue(
+                error.response?.data?.message || "Failed to delete account: Server error."
+            );
+        }
+    }
+);
