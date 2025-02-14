@@ -37,11 +37,11 @@ export const allUser = async (
     res: Response,
     next: NextFunction
 ) => {
-    const { date, status, name, category, sortBy, cursor } = req.query;
+    const { date, status, name, sortBy, cursor } = req.query;
 
     const limit = 10;
 
-    console.log("status", status)
+    console.log("status", status, cursor)
 
     const users = await User.aggregate([
         {
@@ -59,7 +59,7 @@ export const allUser = async (
         ...(cursor ? [
             {
                 $match: {
-                    _id: { $lt: new mongoose.Types.ObjectId(String(cursor)) }
+                    _id: { $gt: new mongoose.Types.ObjectId(String(cursor)) }
                 }
             }
         ] : []),
