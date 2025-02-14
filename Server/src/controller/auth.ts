@@ -58,6 +58,9 @@ export const verfiyEmail = async (
 ) => {
     const { verificationToken } = req.query;
 
+    console.log("req.query", req.query);
+    console.log("verificaton", verificationToken);
+
     if (!verificationToken)
         throw new AppError("Field not found", 400);
 
@@ -285,6 +288,6 @@ export const logout = async (
             sameSite: "strict",
         })
 
-    return res.status(200).json({ message: "Logged out successfully" });
+    return res.status(200).json({ success:true, message: "Logged out successfully" });
 }
 

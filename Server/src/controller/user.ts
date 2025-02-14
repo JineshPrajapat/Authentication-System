@@ -41,6 +41,8 @@ export const allUser = async (
 
     const limit = 10;
 
+    console.log("status", status)
+
     const users = await User.aggregate([
         {
             $match: {
@@ -57,7 +59,7 @@ export const allUser = async (
         ...(cursor ? [
             {
                 $match: {
-                    _id: { $gt: new mongoose.Types.ObjectId(String(cursor)) }
+                    _id: { $lt: new mongoose.Types.ObjectId(String(cursor)) }
                 }
             }
         ] : []),
@@ -68,13 +70,13 @@ export const allUser = async (
             $limit: limit
         },
         {
-            $project:{
-                _id:1,
-                email:1,
-                name:1,
-                status:1,
-                createdAt:1,
-                updatedAt:1
+            $project: {
+                _id: 1,
+                email: 1,
+                name: 1,
+                status: 1,
+                createdAt: 1,
+                updatedAt: 1
             }
         }
     ]);
@@ -88,4 +90,69 @@ export const allUser = async (
         users
     })
 
+}
+
+export const editProfile = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+) => {
+    const userId = req.user?.id;
+
+    const { name, profession, address } = req.body;
+
+    let updateFields: { name?: string, profession?: string, address?: string } = {};
+
+    if (name) updateFields.name = name;
+    if (profession) updateFields.profession = profession;
+    if (address) updateFields.address = address;
+
+    const updatedUser = await User.findByIdAndUpdate(
+        new mongoose.Types.ObjectId(userId),
+        {
+            $set: updateFields
+        },
+        { new: true }
+    );
+
+    if (!updatedUser)
+        throw new AppError("User not found", 404);
+
+    return res.status(200).json({
+        success: true,
+        message: "Profile updated successfully",
+        updatedUser
+    })
+}
+
+export const deleteAccount = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+) => {
+    const userId = req.user?.id;
+
+    const isDeletedUser = await User.findByIdAndDelete(
+        new mongoose.Types.ObjectId(userId)
+    );
+
+    if (!isDeletedUser)
+        throw new AppError("User not found", 404);
+
+    res
+        .clearCookie("refreshToken", {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === "production",
+            sameSite: "none",
+        })
+        .clearCookie("accessToken", {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === "production",
+            sameSite: "none",
+        })
+
+    return res.status(200).json({
+        success: true,
+        message: "Account deleted successfully"
+    });
 }

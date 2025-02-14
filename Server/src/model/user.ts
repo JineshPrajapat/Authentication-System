@@ -5,6 +5,8 @@ interface IUser{
     email:string;
     password:string;
     name:string;
+    address:string;
+    profession:string;
     status: AccountStatusEnum;
     verificationToken: string | null;
     verificationTokenExpiration:Date | null;
@@ -26,6 +28,14 @@ const UserSchema = new Schema<IUser>({
     name:{
         type:String,
         required:true, 
+        trim:true
+    },
+    address:{
+        type:String,
+        trim:true
+    },
+    profession:{
+        type:String,
         trim:true
     },
     status:{

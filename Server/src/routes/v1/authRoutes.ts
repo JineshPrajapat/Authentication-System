@@ -10,7 +10,7 @@ router.post("/verify-email", asyncHandler(authController.verfiyEmail));
 router.post("/login", asyncHandler(authController.login) );
 router.post("/reset-password-token", asyncHandler(authController.resetPasswordToken));
 router.post("/reset-password", asyncHandler(authController.resetPassword));
-router.post("/refreshTokn", asyncHandler(authController.handleRefreshToken));
+router.post("/refreshToken", asyncHandler(authController.handleRefreshToken));
 router.post("/logout", asyncHandler(authController.logout));
 
 
