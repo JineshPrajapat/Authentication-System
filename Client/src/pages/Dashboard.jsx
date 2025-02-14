@@ -10,7 +10,6 @@ const Dashboard = () => {
     const [users, setUsers] = useState([]);
     const [cursor, setCursor] = useState('');
     const [loading, setLoading] = useState(false);
-    const [loadMoreButton, setLoadMoreButton] = useState(true);
     const [filters, setFilters] = useState({
         status: '',
         name: '',
@@ -207,7 +206,7 @@ const Dashboard = () => {
                                                 ? column.isSortedDesc
                                                     ? ' 🔽'
                                                     : ' 🔼'
-                                                : ''}
+                                                : ' 🔄'}
                                         </span>
                                     </th>
                                 ))}
