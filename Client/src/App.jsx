@@ -11,6 +11,7 @@ import ForgotPassword from './component/forgetpassword';
 import ResetPassword from './component/resetpassword';
 import AuthToggle from './pages/AuthToggle';
 
+
 function App() {
 
   const { authState, loading } = useSelector((state) => state.user);

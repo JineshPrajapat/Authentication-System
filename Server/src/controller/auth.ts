@@ -196,7 +196,7 @@ export const resetPasswordToken = async (
         { new: true }
     );
 
-    const resetPasswordLink: string = `${process.env.FRONTEND_BASE_URL}/reset-password/${resetPasswordToken}`;
+    const resetPasswordLink: string = `${process.env.FRONTEND_URL}/reset-password/${resetPasswordToken}`;
 
     if (!updatedUser)
         throw new AppError("Failed to create Reset password link", 501);

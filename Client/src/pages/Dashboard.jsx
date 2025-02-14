@@ -1,8 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { useTable, usePagination, useSortBy } from 'react-table';
 import userApi from '../api/userapi';
 import { useDispatch } from 'react-redux';
 import { logOut } from '../services/auth';
+
+const INACTIVITY_TIMEOUT = 60 * 60 * 1000;
 
 const Dashboard = () => {
     const [users, setUsers] = useState([]);
@@ -17,7 +19,7 @@ const Dashboard = () => {
     const [sortBy, setSortBy] = useState('');
     const [search, setSearch] = useState('');
 
-
+    const inactivityTimer = useRef(null);
     const dispatch = useDispatch();
 
     const fetchUsers = async () => {
@@ -51,7 +53,7 @@ const Dashboard = () => {
                         return [...prevUsers, ...uniqueUsers];
                     });
                 }
-                else{
+                else {
                     setUsers(response.data.users);
                 }
             }
@@ -68,6 +70,42 @@ const Dashboard = () => {
         fetchUsers();
     }, [cursor, filters, search, sortBy]);
 
+
+
+
+    // logout timer
+    const resetInactivityTimer = () => {
+        if (inactivityTimer.current) {
+            clearTimeout(inactivityTimer.current);
+        }
+        inactivityTimer.current = setTimeout(() => {
+            dispatch(logOut());
+            navigate('/');
+        }, INACTIVITY_TIMEOUT);
+    };
+
+    // trigger eventlistener
+    useEffect(() => {
+        const activityEvents = ['mousemove', 'mousedown', 'keypress', 'scroll'];
+
+        activityEvents.forEach((event) => {
+            window.addEventListener(event, resetInactivityTimer);
+        });
+
+        // start timer on page reloads
+        resetInactivityTimer();
+
+        return () => {
+            activityEvents.forEach((event) => {
+                window.removeEventListener(event, resetInactivityTimer);
+            });
+            if (inactivityTimer.current) {
+                clearTimeout(inactivityTimer.current);
+            }
+        };
+    }, []);
+
+
     const data = React.useMemo(() => users, [users]);
 
     const columns = React.useMemo(
@@ -75,7 +113,7 @@ const Dashboard = () => {
             { Header: 'Name', accessor: 'name' },
             { Header: 'Email', accessor: 'email' },
             { Header: 'Status', accessor: 'status' },
-            { Header: 'Actions', accessor: 'actions', Cell: ({ row }) => <button className="text-blue-500 hover:text-blue-700">Edit</button> },
+            // { Header: 'Actions', accessor: 'actions', Cell: ({ row }) => <button className="text-blue-500 hover:text-blue-700">Edit</button> },
         ],
         []
     );
