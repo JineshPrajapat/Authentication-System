@@ -23,7 +23,7 @@ const Dashboard = () => {
     const dispatch = useDispatch();
 
     const fetchUsers = async () => {
-
+        setCursor(users[users.length - 1]?._id)
         const params = {
             name: search ?? "",
             status: filters.status,
@@ -233,24 +233,21 @@ const Dashboard = () => {
                 </table>
             </div>
 
-            {/* Load More */}
-            {loadMoreButton &&
-                <div className="flex justify-between items-center mt-4">
-                    {loading ? (
-                        <div className="flex items-center space-x-2">
-                            <div className="w-4 h-4 border-4 border-t-4 border-gray-500 border-t-transparent rounded-full animate-spin"></div>
-                            <span>Loading...</span>
-                        </div>
-                    ) : (
-                        <button
-                            onClick={() => { setCursor(users[users.length - 1]?._id); fetchUsers }}
-                            className="px-6 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-700 transition duration-300"
-                        >
-                            Load More
-                        </button>
-                    )}
-                </div>
-            }
+            <div className="flex justify-between items-center mt-4">
+                {loading ? (
+                    <div className="flex items-center space-x-2">
+                        <div className="w-4 h-4 border-4 border-t-4 border-gray-500 border-t-transparent rounded-full animate-spin"></div>
+                        <span>Loading...</span>
+                    </div>
+                ) : (
+                    <button
+                        onClick={fetchUsers}
+                        className="px-6 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-700 transition duration-300"
+                    >
+                        Load More
+                    </button>
+                )}
+            </div>
 
 
         </div>
