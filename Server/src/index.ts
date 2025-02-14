@@ -13,7 +13,7 @@ const app = express();
 
 
 const corsOptions = {
-    origin: process.env.FRONTEND_URL || "http://localhost:5173",
+    origin: ["https://authentication-system-nowf.vercel.app", "http://localhost:5173"],
     methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
     credentials: true,
     allowedHeaders: ["Content-Type", "Authorization"],
