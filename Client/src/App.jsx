@@ -36,25 +36,29 @@ function App() {
   useEffect(() => {
     console.log("authstated", authState)
     if (authState === AuthStates.AUTHENTICATED) {
-      navigate('/'); 
+      navigate('/');
     }
-    else{
-      dispatch(setUser({authState: AuthStates.IDLE}))
+    else {
+      dispatch(setUser({ authState: AuthStates.IDLE }))
     }
   }, [authState, navigate]);
 
-  if (loading || authState === AuthStates.INITIALIZING)
-    return <p>Loading...</p>;
+  if (authState === AuthStates.INITIALIZING)
+    return (
+      <div className="h-screen w-full flex justify-center items-center">
+        <div className="animate-spin h-8 w-8 border-t-4 border-blue-500 border-solid rounded-full" />
+      </div>
+    )
 
 
   return (
     <Routes>
       {authState !== AuthStates.AUTHENTICATED ? (
         <>
-          <Route path='/' element={<AuthToggle/>}/>
+          <Route path='/' element={<AuthToggle />} />
           <Route path="/verify-email/:verificationToken" element={<VerifyEmail />} />
           <Route path="/forget-password" element={<ForgotPassword />} />
-          <Route path="/reset-password/:token" element={<ResetPassword />} /> 
+          <Route path="/reset-password/:token" element={<ResetPassword />} />
         </>
       ) : (
         <>

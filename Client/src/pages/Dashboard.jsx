@@ -140,9 +140,11 @@ const Dashboard = () => {
     // updating profile
     const handleSaveChanges = (e) => {
 
+        setLoading(true);
         e.preventDefault()
         dispatch(updateProfile({ formData }));
         setEditProfile(false);
+        setLoading(false);
     };
 
     useEffect(() => {
@@ -315,7 +317,7 @@ const Dashboard = () => {
                                     onClick={handleSaveChanges}
                                     className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-700"
                                 >
-                                    Save Changes
+                                    {loading ? "Updating..." :"Update profile"}
                                 </button>
                                 <button
                                     type="button"

@@ -7,7 +7,7 @@ const VerifyEmail = () => {
   const { verificationToken } = useParams(); 
   const dispatch = useDispatch();
 
-  const [status, setStatus] = useState("processing"); // "processing", "verified", "failed"
+  const [status, setStatus] = useState("processing"); // processing, verified, failed
 
   useEffect(() => {
     if (status === "verified" || status === "failed") return;
@@ -29,7 +29,7 @@ const VerifyEmail = () => {
     };
 
     verifyUserEmail();
-  }, [verificationToken, dispatch, status]); // Add `status` to dependency array
+  }, [verificationToken, dispatch, status]); 
 
   return (
     <div className="min-h-screen flex justify-center items-center bg-gray-100">
